@@ -3,6 +3,7 @@ package pme123.scalably.slinky.services
 import java.nio.ByteBuffer
 
 import boopickle.Default._
+import boopickle.UnpickleImpl
 import org.scalajs.dom.ext.Ajax
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -21,7 +22,7 @@ object AjaxClient extends autowire.Client[ByteBuffer, Pickler, Pickler] {
     ).map(r => TypedArrayBuffer.wrap(r.response.asInstanceOf[ArrayBuffer]))
   }
 
-  override def read[Result: Pickler](p: ByteBuffer) = Unpickle[Result].fromBytes(p)
+  override def read[Result: Pickler](p: ByteBuffer): Result = UnpickleImpl[Result].fromBytes(p)
 
-  override def write[Result: Pickler](r: Result) = Pickle.intoBytes(r)
+  override def write[Result: Pickler](r: Result): ByteBuffer = Pickle.intoBytes(r)
 }

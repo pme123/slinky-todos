@@ -64,24 +64,15 @@ object Settings {
         )
       )
 
-    lazy val plotlyExample: Project => Project =
+    lazy val antdSettings: Project => Project =
       _.settings(
         stFlavour := Flavour.Slinky,
         useYarn := true,
         stIgnore := List("react-proxy"),
         Compile / npmDependencies ++= Seq(
-          "plotly.js" -> "1.57.1",
-          "react-plotly.js" -> "2.5.0",
-          "@types/react-plotly.js" -> "2.2.4",
+          "antd" -> "4.5.1",
           "@types/react" -> "16.9.42",
           "@types/react-dom" -> "16.9.8"
-        )
-      )
-
-    lazy val antdSettings: Project => Project =
-      _.settings(
-        Compile / npmDependencies ++= Seq(
-          "antd" -> "4.5.1"
         )
       )
 

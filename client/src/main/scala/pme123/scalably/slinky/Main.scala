@@ -1,21 +1,19 @@
 package pme123.scalably.slinky
 
-import scala.scalajs.js
-import scala.scalajs.js.annotation.{JSExportTopLevel, JSImport}
-import scala.scalajs.LinkingInfo
-
-import slinky.core._
-import slinky.web.ReactDOM
-import slinky.hot
-
 import org.scalajs.dom
+import slinky.hot
+import slinky.web.ReactDOM
+
+import scala.scalajs.{LinkingInfo, js}
+import scala.scalajs.js.annotation.{JSExportTopLevel, JSImport}
 
 @JSImport("resources/index.css", JSImport.Default)
 @js.native
 object IndexCSS extends js.Object
 
 object Main {
-  val css = IndexCSS
+  //noinspection ScalaUnusedSymbol
+  private val css = IndexCSS
 
   @JSExportTopLevel("main")
   def main(): Unit = {

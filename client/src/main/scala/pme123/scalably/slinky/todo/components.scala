@@ -4,7 +4,6 @@ import pme123.scalably.slinky.shared.TodoItem
 import slinky.core.FunctionalComponent
 import slinky.core.annotations.react
 import slinky.core.facade.ReactElement
-import slinky.web.html.*.tag
 import slinky.web.html._
 import typings.antDesignIcons.components.AntdIcon
 import typings.antDesignIconsSvg.mod._
@@ -13,7 +12,7 @@ import typings.antd.components.{Col, _}
 import typings.antd.listMod.{ListLocale, ListProps}
 import typings.antd.paginationPaginationMod.PaginationConfig
 import typings.antd.useFormMod
-import typings.rcFieldForm.interfaceMod.{BaseRule, Rule, RuleObject}
+import typings.rcFieldForm.interfaceMod.BaseRule
 
 import scala.scalajs.js
 import scala.scalajs.js.Date

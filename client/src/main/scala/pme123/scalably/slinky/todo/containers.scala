@@ -2,17 +2,22 @@ package pme123.scalably.slinky.todo
 
 import autowire.{clientCallable, _}
 import boopickle.Default._
+import org.scalajs.dom.XMLHttpRequest
+import org.scalajs.dom.ext.AjaxException
 import pme123.scalably.slinky.services.AjaxClient
 import pme123.scalably.slinky.shared.{Api, TodoItem}
 import pme123.scalably.slinky.todo.components.{AddTodoForm, TList}
 import slinky.core.FunctionalComponent
 import slinky.core.facade.Hooks.{useEffect, useState}
+import slinky.web.html.{div, s}
+import typings.antd.antdStrings
 import typings.antd.antdStrings.{center, middle}
 import typings.antd.components._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
+import scala.util.{Failure, Success}
 
 @JSImport("resources/Todo.css", JSImport.Default)
 @js.native
@@ -29,10 +34,14 @@ object containers {
 
       // Note: the empty deps array [] means
       // this useEffect will run once
-      useEffect(
-        () =>
-          AjaxClient[Api].getAllTodos().call().foreach { todos =>
-            setItems(todos)
+      useEffect(        () =>
+          AjaxClient[Api].getAllTodos().call().onComplete {
+            case Success(todos) =>
+              setIsLoaded(true)
+              setItems(todos)
+            case Failure(ex) =>
+              setIsLoaded(true)
+              setError(Some(ex.toString))
           },
         Seq.empty
       )
@@ -87,7 +96,24 @@ object containers {
             .xl(18)(
               Card
                 .title("Todo List")(
-                  TList(todos, handleTodoToggle, handleRemoveTodo)
+                  (error, isLoaded) match {
+                    case (Some(msg), _) =>
+                      Alert
+                        .message(s"Error: $msg")
+                        .`type`(antdStrings.error)
+                        .showIcon(true)
+                    case (_, false) =>
+                      Spin
+                        .size(antdStrings.default)
+                        .spinning(true)(
+                          Alert
+                            .message("Loading Todos")
+                            .`type`(antdStrings.info)
+                            .showIcon(true)
+                        )
+                    case _ =>
+                      TList(todos, handleTodoToggle, handleRemoveTodo)
+                  }
                 )
             )
         )

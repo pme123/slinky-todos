@@ -3,14 +3,8 @@ package pme123.scalably.slinky
 import pme123.scalably.slinky.todo.containers
 import slinky.core._
 import slinky.core.annotations.react
-import slinky.core.facade.Hooks
 import slinky.web.html._
 import typings.antd.components._
-import typings.plotlyJs.anon.{PartialPlotDataAutobinx, PartialPlotMarkerAutocolorscale}
-import typings.plotlyJs.mod.{Data, PlotType}
-import typings.plotlyJs.plotlyJsStrings
-import typings.reactPlotlyJs.anon.PartialLayout
-import typings.reactPlotlyJs.components.ReactPlotlyDotjs
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
@@ -30,10 +24,12 @@ object ReactLogo extends js.Object
 @react object App {
   type Props = Unit
 
-  private val css = AppCSS
+  //noinspection ScalaUnusedSymbol
+  private val appCss = AppCSS
+  //noinspection ScalaUnusedSymbol
   private val antCss = AntCSS
 
-  val component = FunctionalComponent[Props] { _ =>
+  val component: FunctionalComponent[Props] = FunctionalComponent[Props] { _ =>
 
     Layout(className := "App")(
       Layout.Header(className := "App-header")(

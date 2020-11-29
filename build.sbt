@@ -33,7 +33,6 @@ lazy val client =
       sha.deps,
       cli.slinkyBasics,
       cli.webpackSettings,
-      cli.plotlyExample,
       cli.antdSettings
     )
 
