@@ -1,0 +1,15 @@
+/target/
+.bloop/
+.bsp/
+yarn.lock
+.idea/
+.metals/
+project/project/
+project/target/
+project/metals.sbt
+.vscode/settings.json
+/client/target/
+/client/build/
+/shared/.js/
+/shared/.jvm/
+/server/target/
