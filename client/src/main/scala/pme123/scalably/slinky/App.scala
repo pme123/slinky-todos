@@ -34,21 +34,6 @@ object ReactLogo extends js.Object
   private val antCss = AntCSS
 
   val component = FunctionalComponent[Props] { _ =>
-    val (isModalVisible, updateIsModalVisible) = Hooks.useState(false)
-
-    val renderModal = section(
-      br(),
-      h2("Ant Design with Plotly Example"),
-      Button.onClick(_ => updateIsModalVisible(true))("Open Plotly diagram"),
-      Modal
-        .width("800px")
-        .visible(isModalVisible)
-        .title("Voilà the Plotly Diagram")
-        .onCancel(_ => updateIsModalVisible(false))
-        .onOk(_ => updateIsModalVisible(false))(
-          plots.MyComponent(())
-        )
-    )
 
     Layout(className := "App")(
       Layout.Header(className := "App-header")(
@@ -57,50 +42,17 @@ object ReactLogo extends js.Object
           className := "App-logo",
           alt := "logo"
         ),
-        h1(className := "App-title")("Welcome to React (with Scala.js!)")
+        h1(className := "App-title")("Slinky's TODO List")
       ),
-      Layout.Content(style := js.Dynamic.literal(
-        `background` = "white")
-        )(
-        renderModal,
-        br(),
-        p("See here for more information:"),
-        p(a(href := "https://ant.design")("Ant Design")),
-        p(a(href := "https://github.com/plotly/plotly.js/")("Plotly")),
+      Layout.Content(
         containers.TodoContainer()
       ),
-      Layout.Footer(
+      Layout.Footer(className := "App-footer")(
         "Check it out on Github: ",
-        a(href := "https://github.com/pme123/scalably-slinky-example")(
-          "scalably-slinky-example"
+        a(href := "https://github.com/pme123/slinky-todos")(
+          "slinky-todos"
         )
       )
     )
-  }
-}
-
-object plots {
-  val MyComponent = FunctionalComponent[Unit] { _ =>
-    val data = js.Array[Data](
-      PartialPlotDataAutobinx()
-        .setXVarargs(1, 2, 3)
-        .setYVarargs(2, 6, 3)
-        .setType(PlotType.scatter)
-        .setMode(plotlyJsStrings.linesPlussignmarkers)
-        .setMarker(
-          PartialPlotMarkerAutocolorscale()
-            .setColor("red")
-        ),
-      PartialPlotDataAutobinx()
-        .setType(PlotType.bar)
-        .setXVarargs(1, 2, 3)
-        .setYVarargs(2, 5, 3)
-    )
-
-    ReactPlotlyDotjs(
-      data = data,
-      layout =
-        PartialLayout().setWidth(0.8).setHeight(400).setTitle("A Fancy Plot")
-    ).debug(true)
   }
 }

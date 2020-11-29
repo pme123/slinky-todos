@@ -11,8 +11,7 @@ object Settings {
   lazy val projectSettings: Project => Project =
     _.settings(
       version := "0.2.0-SNAPSHOT",
-      scalaVersion := "2.13.2",
-      webpackDevServerPort := 8023
+      scalaVersion := "2.13.2"
     )
 
   object shared {
@@ -82,13 +81,14 @@ object Settings {
     lazy val antdSettings: Project => Project =
       _.settings(
         Compile / npmDependencies ++= Seq(
-          "antd" -> "4.8.2"
+          "antd" -> "4.5.1"
         )
       )
 
     lazy val webpackSettings: Project => Project =
       _.settings(
-        version in webpack := "4.43.0",
+        webpackDevServerPort := 8024,
+          version in webpack := "4.43.0",
         version in startWebpackDevServer := "3.11.0",
         webpackResources := baseDirectory.value / "webpack" * "*",
         webpackConfigFile in fastOptJS := Some(

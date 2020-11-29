@@ -1,18 +1,16 @@
 package pme123.scalably.slinky.todo
 
-import autowire.clientCallable
-import pme123.scalably.slinky.AjaxClient
+import autowire.{clientCallable, _}
+import boopickle.Default._
+import pme123.scalably.slinky.services.AjaxClient
 import pme123.scalably.slinky.shared.{Api, TodoItem}
 import pme123.scalably.slinky.todo.components.{AddTodoForm, TList}
 import slinky.core.FunctionalComponent
-import slinky.core.facade.Fragment
 import slinky.core.facade.Hooks.{useEffect, useState}
 import typings.antd.antdStrings.{center, middle}
 import typings.antd.components._
-import scala.concurrent.ExecutionContext.Implicits.global
-import boopickle.Default._
-import autowire._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
@@ -28,7 +26,6 @@ object containers {
       val (error, setError) = useState[Option[String]](None)
       val (isLoaded, setIsLoaded) = useState(false)
       val (todos, setItems) = useState(Seq.empty[TodoItem])
-      import boopickle.Default._
 
       // Note: the empty deps array [] means
       // this useEffect will run once
@@ -59,6 +56,7 @@ object containers {
       Row
         // .gutter(20) //[o, 20] ?
         .justify(center)
+        .className("todos-container")
         .align(middle)(
           Col
             .xs(23)

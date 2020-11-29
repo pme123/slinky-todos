@@ -1,13 +1,13 @@
 if (process.env.NODE_ENV === "production") {
-    const opt = require("./scalably-slinky-example-opt.js");
+    const opt = require("./slinky-todos-client-opt.js");
     opt.main();
     module.exports = opt;
 } else {
     var exports = window;
-    exports.require = require("./scalably-slinky-example-fastopt-entrypoint.js").require;
+    exports.require = require("./slinky-todos-client-fastopt-entrypoint.js").require;
     window.global = window;
 
-    const fastOpt = require("./scalably-slinky-example-fastopt.js");
+    const fastOpt = require("./slinky-todos-client-fastopt.js");
     fastOpt.main()
     module.exports = fastOpt;
 

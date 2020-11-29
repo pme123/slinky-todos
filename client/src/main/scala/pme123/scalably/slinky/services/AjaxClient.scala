@@ -1,16 +1,16 @@
-package pme123.scalably.slinky
+package pme123.scalably.slinky.services
 
 import java.nio.ByteBuffer
 
 import boopickle.Default._
 import org.scalajs.dom.ext.Ajax
 
-import scala.concurrent.Future
-import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
+import scala.concurrent.{ExecutionContext, Future}
 import scala.scalajs.js.typedarray.{ArrayBuffer, TypedArrayBuffer}
 
-
 object AjaxClient extends autowire.Client[ByteBuffer, Pickler, Pickler] {
+  implicit val ec: ExecutionContext = ExecutionContext.global
+
   override def doCall(req: Request): Future[ByteBuffer] = {
     println(s"DATA: ${req.args}")
     Ajax.post(

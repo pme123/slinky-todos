@@ -1,4 +1,4 @@
-.todos-container {
+.todos-container > div {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
 }

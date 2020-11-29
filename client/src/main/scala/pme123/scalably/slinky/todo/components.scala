@@ -1,20 +1,19 @@
 package pme123.scalably.slinky.todo
 
 import pme123.scalably.slinky.shared.TodoItem
-import slinky.core.{FunctionalComponent, TagMod}
+import slinky.core.FunctionalComponent
 import slinky.core.annotations.react
 import slinky.core.facade.ReactElement
 import slinky.web.html.*.tag
 import slinky.web.html._
-import typings.antDesignIconsSvg.mod
+import typings.antDesignIcons.components.AntdIcon
 import typings.antDesignIconsSvg.mod._
-import typings.antDesignIconsSvg.typesMod.IconDefinition
-import typings.antd.antdStrings.{Form => _, Popconfirm => _, className => _, _}
+import typings.antd.{antdStrings => aStr}
 import typings.antd.components.{Col, _}
-import typings.antd.listItemMod.ListItemProps
 import typings.antd.listMod.{ListLocale, ListProps}
 import typings.antd.paginationPaginationMod.PaginationConfig
 import typings.antd.useFormMod
+import typings.rcFieldForm.interfaceMod.{BaseRule, Rule, RuleObject}
 
 import scala.scalajs.js
 import scala.scalajs.js.Date
@@ -24,10 +23,10 @@ object components {
   @react object TList {
 
     case class Props(
-        todos: Seq[TodoItem],
-        onTodoToggle: TodoItem => Unit,
-        onTodoRemoval: TodoItem => Unit
-    )
+                      todos: Seq[TodoItem],
+                      onTodoToggle: TodoItem => Unit,
+                      onTodoRemoval: TodoItem => Unit
+                    )
 
     val component: FunctionalComponent[Props] = FunctionalComponent[Props] {
       props =>
@@ -46,7 +45,7 @@ object components {
               )
               .setPagination(
                 PaginationConfig()
-                  .setPosition(bottom)
+                  .setPosition(aStr.bottom)
                   .setPageSize(10)
               )
           )
@@ -56,10 +55,10 @@ object components {
   @react object TItem {
 
     case class Props(
-        todo: TodoItem,
-        onTodoToggle: TodoItem => Unit,
-        onTodoRemoval: TodoItem => Unit
-    )
+                      todo: TodoItem,
+                      onTodoToggle: TodoItem => Unit,
+                      onTodoRemoval: TodoItem => Unit
+                    )
 
     val component: FunctionalComponent[Props] = FunctionalComponent[Props] {
       props =>
@@ -69,16 +68,16 @@ object components {
           .className("list-item")
           .actions(
             js.Array(
-              Tooltip.TooltipPropsWithTitleRefAttributes
-                .title(
-                  (if (todo.completed) "Mark as uncompleted"
-                   else "Mark as completed").asInstanceOf[ReactElement]
+              Tooltip.TooltipPropsWithOverlayRefAttributes
+                .titleReactElement(
+                  if (todo.completed) "Mark as uncompleted"
+                  else "Mark as completed")(
+                  Switch
+                    .checkedChildren(AntdIcon(CheckOutlined))
+                    .unCheckedChildren(AntdIcon(CloseOutlined))
+                    .onChange((_, _) => onTodoToggle(props.todo))
+                    .defaultChecked(todo.completed)
                 ),
-              Switch
-                // .checkedChildren(CheckOutlined)
-                // .unCheckedChildren(CloseOutlined.asInstanceOf[ReactElement])
-                .onChange((_, _) => onTodoToggle(props.todo))
-                .defaultChecked(todo.completed),
               Popconfirm
                 .title(
                   "Are you sure you want to delete?"
@@ -87,7 +86,7 @@ object components {
                 .onConfirm(_ => onTodoRemoval(todo))(
                   Button("X")
                     .className("remove-todo-button")
-                    .`type`(primary)
+                    .`type`(aStr.primary)
                     .danger(true)
                 )
             )
@@ -96,7 +95,7 @@ object components {
               className := "todo-item"
             )(
               Tag(todo.content)
-                .color(if (todo.completed) cyan else red)
+                .color(if (todo.completed) aStr.cyan else aStr.red)
                 .className("todo-tag")
             )
           )
@@ -106,13 +105,13 @@ object components {
   @react object AddTodoForm {
 
     case class Props(
-        onFormSubmit: TodoItem => Unit
-    )
+                      onFormSubmit: TodoItem => Unit
+                    )
 
     val component: FunctionalComponent[Props] = FunctionalComponent[Props] {
       props =>
         val Props(onFormSubmit) = props
-        val form: useFormMod.FormInstance[String] = useFormMod.default().head
+        val form = useFormMod.default().head
 
         val onFinish = (_: Any) => {
           val content = form.getFieldValue("content").toString
@@ -123,7 +122,7 @@ object components {
         Form
           .form(form)
           .onFinish(onFinish)
-          .layout(horizontal)
+          .layout(aStr.horizontal)
           .className("todo-form")(
             Row
               .gutter(20)(
@@ -133,12 +132,11 @@ object components {
                   .md(17)
                   .lg(19)
                   .xl(20)(
-                    Form.Item
+                    FormItem
                       .name("content")
-                      .rules(
-                        js.Array(
-                          //TODO required
-                        )
+                      .rulesVarargs(
+                        BaseRule().setRequired(true)
+                          .setMessage("Please say what you want to do!'")
                       )(
                         Input.placeholder("What needs to be done?")
                       )
@@ -150,10 +148,10 @@ object components {
                   .lg(5)
                   .xl(4)(
                     Button("Add Todo")
-                      .`type`(primary)
-                      .htmlType(submit)
+                      .`type`(aStr.primary)
+                      .htmlType(aStr.submit)
                       .block(true)
-                    //   .icon(PlusCircleFilled)
+                      .icon(AntdIcon(PlusCircleFilled))
                   )
               )
           )
