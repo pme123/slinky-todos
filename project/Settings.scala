@@ -1,3 +1,5 @@
+import com.typesafe.sbt.SbtNativePackager.Universal
+import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalablytyped.converter.plugin.ScalablyTypedPluginBase.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
@@ -28,19 +30,28 @@ object Settings {
   object server {
     lazy val deps: Project => Project =
       _.settings(
-
+     //   (managedClasspath in Runtime) += (packageBin in previewJVM in Assets).value,
         libraryDependencies ++= Seq(
           "org.polynote" %% "uzhttp" % "0.2.6"
-        )
+        ),
+        Compile / unmanagedResourceDirectories += baseDirectory.value / "../client/build"
+        /*,
+        Compile / resourceGenerators += Def.task {
+          val file =  baseDirectory.value / "../client/target/scala-2.13/scalajs-bundler/main/dist"
+         println(s"FILE as resources: $file")
+          Seq(file)
+        }.taskValue*/
+
       )//.withoutSuffixFor(JVMPlatform)
   }
 
   object client {
+
     lazy val slinkyBasics: Project => Project =
       _.settings(
         scalacOptions += "-Ymacro-annotations",
         requireJsDomEnv in Test := true,
-        addCommandAlias("dev", ";fastOptJS::startWebpackDevServer;~fastOptJS"),
+        addCommandAlias("dev", ";set javaOptions  += \"-DIsLocal=true\";fastOptJS::startWebpackDevServer;~fastOptJS"),
         addCommandAlias("build", "fullOptJS::webpack"),
         libraryDependencies ++= Seq(
           "me.shadaj" %%% "slinky-web" % "0.6.6",
@@ -63,6 +74,7 @@ object Settings {
           "webpack-merge" -> "4.2.2"
         )
       )
+
 
     lazy val antdSettings: Project => Project =
       _.settings(

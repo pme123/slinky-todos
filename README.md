@@ -4,15 +4,39 @@
 * Using Slinky on the Client side.
 * Having a decent UI.
 
+`git clone https://github.com/pme123/slinky-todos.git`
 
-## Usage
+## Usage in Dev
+### Server
+`sbt run` 
+
+This starts the Web Server on **Port 8881**.
 
 ### Client
-In the sbt console:
+`sbt dev`
 
-`dev` Development with live updates of the client side.
+This will watch all your changes in the client and automatically refresh your Browser Session.
 
-`build` Bundle the Client.
+Open in the Browser **http://localhost:8024**.
+
+> WARN: You might get a CORS Exception getting the TODOs from the Server.
+>
+> See https://stackoverflow.com/a/38000615/2750966 for a solution.
+
+## Production Build
+`sbt release`
+
+Creates an optimized Client bundle and adds it to the Server Library.
+
+The whole distribution you can find here: `./server/target/universal/stage`.
+
+You can start the server like this:
+
+* Mac / Linux: `./server/target/universal/stage/bin/slinky-todos-server`
+* Windows: `./server/target/universal/stage/bin/slinky-todos-server`
+
+If you want to build a distribution check here for the possibilities: 
+[sbt-native-packager](https://www.scala-sbt.org/sbt-native-packager/gettingstarted.html#)
 
 ## Thanks to
 This example is more or less a mashup from different Github projects:

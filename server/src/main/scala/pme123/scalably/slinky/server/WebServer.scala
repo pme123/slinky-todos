@@ -1,6 +1,6 @@
 package pme123.scalably.slinky.server
 
-import java.net.InetSocketAddress
+import java.net.{InetSocketAddress, URLConnection}
 import java.nio.ByteBuffer
 
 import boopickle.Default._
@@ -17,7 +17,7 @@ object WebServer extends App {
 
   override def run(args: List[String]): URIO[ZEnv, Nothing] =
     Server
-      .builder(new InetSocketAddress("localhost", 8888))
+      .builder(new InetSocketAddress("localhost", 8881))
       .handleSome {
         case req if req.method == Method.OPTIONS =>
           // autowire sends that
@@ -27,6 +27,28 @@ object WebServer extends App {
           )
         case req if req.uri.getPath.startsWith("/api") =>
           autowireApi(req)
+
+        case req if req.uri.getPath.length <= 1 =>
+          Response
+            .fromResource(
+              s"index.html",
+              req,
+              contentType = "text/html"
+            )
+            .refineHTTP(req)
+        case req =>
+          Response
+            .fromResource(
+              req.uri.getPath.drop(1),
+              req,
+              contentType = req.uri.getPath match {
+                case p if p.endsWith(".svg") =>
+                  "image/svg+xml"
+                case _ =>
+                  URLConnection.guessContentTypeFromName(req.uri.getPath)
+              }
+            )
+            .refineHTTP(req)
       }
       .serve
       .useForever

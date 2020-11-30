@@ -1,8 +1,11 @@
 
 import Settings.{projectSettings, client => cli, server => ser, shared => sha}
+import sbt.enablePlugins
 
 lazy val root = project
-  .settings(name := "slinky-todos")
+  .settings(
+    name := "slinky-todos",
+    commands += ReleaseCmd)
   .in(file("."))
   .aggregate(client)
   .configure(
@@ -44,8 +47,15 @@ lazy val server =
       projectSettings,
       ser.deps,
       sha.deps
-    )
+    ).enablePlugins(JavaAppPackaging)
 
-
+lazy val ReleaseCmd = Command.command("release") {
+  state =>
+    "clean" ::
+      "build" ::
+      "server/compile" ::
+      "server/stage" ::
+      state
+}
 
 
