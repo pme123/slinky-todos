@@ -1,7 +1,13 @@
 package pme123.scalably.slinky.server
 
-import java.util.{UUID, Date}
+import java.nio.ByteBuffer
+import java.util.{Date, UUID}
+
+import boopickle.Default._
+import boopickle.UnpickleImpl
 import pme123.scalably.slinky.shared._
+
+import scala.concurrent.ExecutionContext.global
 
 class ApiService extends Api {
   var todos = Seq(

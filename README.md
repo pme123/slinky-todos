@@ -7,12 +7,17 @@
 `git clone https://github.com/pme123/slinky-todos.git`
 
 ## Usage in Dev
-### Server
-`sbt run` 
+### Server Development
+`sbt server/run`
 
-This starts the Web Server on **Port 8881**.
+This starts the Web Server on **Port 8883**.
 
-### Client
+>This copies the client assets to the classpath of the server.
+> So make sure you run `build` before.
+> 
+> Or use the client as described in the next chapter.
+
+### Client Development
 `sbt dev`
 
 This will watch all your changes in the client and automatically refresh your Browser Session.
@@ -77,7 +82,5 @@ A simple project that contains only the client side.
   >A design system for enterprise-level products. Create an efficient and enjoyable work experience.
 
 ### Server
-* [uzhttp](https://github.com/polynote/uzhttp)
-  > This (Micro-Z-HTTP, or "uzi-HTTP" if you like) is a minimal HTTP server using ZIO. 
-  > It has essentially no features. 
-  > You probably shouldn't use it.
+* [http4s](https://http4s.org)
+  > Typeful, functional, streaming HTTP for Scala.

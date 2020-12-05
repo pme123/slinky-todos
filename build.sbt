@@ -1,6 +1,5 @@
 
 import Settings.{projectSettings, client => cli, server => ser, shared => sha}
-import sbt.enablePlugins
 
 lazy val root = project
   .settings(
@@ -46,13 +45,15 @@ lazy val server =
     .configure(
       projectSettings,
       ser.deps,
+      ser.http4s,
       sha.deps
     ).enablePlugins(JavaAppPackaging)
 
 lazy val ReleaseCmd = Command.command("release") {
   state =>
-    "clean" ::
+    "client/clean" ::
       "build" ::
+      "server/clean" ::
       "server/compile" ::
       "server/stage" ::
       state

@@ -16,7 +16,7 @@ object AjaxClient extends autowire.Client[ByteBuffer, Pickler, Pickler] {
   private lazy val url =
     if (window.location.port == "8024") {
       println("ATTENTION: CORS - see https://stackoverflow.com/a/38000615/2750966")
-      "http://localhost:8881"
+      "http://localhost:8883"
     }
     else ""
 

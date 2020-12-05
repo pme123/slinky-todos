@@ -1,12 +1,9 @@
-import com.typesafe.sbt.SbtNativePackager.Universal
-import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalablytyped.converter.plugin.ScalablyTypedPluginBase.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
-import sbtcrossproject.CrossPlugin.autoImport._
 
 object Settings {
 
@@ -24,25 +21,23 @@ object Settings {
           "io.suzaku" %%% "boopickle" % "1.3.2",
           "com.lihaoyi" %%% "upickle" % "1.2.2"
         )
-      )//.withoutSuffixFor(JVMPlatform)
+      ) //.withoutSuffixFor(JVMPlatform)
   }
 
   object server {
     lazy val deps: Project => Project =
       _.settings(
-     //   (managedClasspath in Runtime) += (packageBin in previewJVM in Assets).value,
-        libraryDependencies ++= Seq(
-          "org.polynote" %% "uzhttp" % "0.2.6"
-        ),
-        Compile / unmanagedResourceDirectories += baseDirectory.value / "../client/build"
-        /*,
-        Compile / resourceGenerators += Def.task {
-          val file =  baseDirectory.value / "../client/target/scala-2.13/scalajs-bundler/main/dist"
-         println(s"FILE as resources: $file")
-          Seq(file)
-        }.taskValue*/
+        Compile / unmanagedResourceDirectories += baseDirectory.value / "../client/target/build"
+      )
 
-      )//.withoutSuffixFor(JVMPlatform)
+    val http4sVersion = "0.21.12"
+    lazy val http4s: Project => Project =
+      _.settings(
+        libraryDependencies ++= Seq(
+          "org.http4s" %% "http4s-dsl" % http4sVersion,
+          "org.http4s" %% "http4s-blaze-server" % http4sVersion
+        )
+      )
   }
 
   object client {
@@ -91,7 +86,7 @@ object Settings {
     lazy val webpackSettings: Project => Project =
       _.settings(
         webpackDevServerPort := 8024,
-          version in webpack := "4.43.0",
+        version in webpack := "4.43.0",
         version in startWebpackDevServer := "3.11.0",
         webpackResources := baseDirectory.value / "webpack" * "*",
         webpackConfigFile in fastOptJS := Some(

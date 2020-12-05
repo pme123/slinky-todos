@@ -12,7 +12,12 @@ module.exports = merge(core, {
   devtool: "source-map",
   entry: entries,
   output: {
-    path: path.resolve(__dirname, "../../../../build")
+    path: path.resolve(__dirname, "../../../../target/build/assets")
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
