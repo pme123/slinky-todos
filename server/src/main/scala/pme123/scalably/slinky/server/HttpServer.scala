@@ -8,6 +8,7 @@ import org.http4s.EntityEncoder._
 import org.http4s.dsl.io._
 import org.http4s.server.Server
 import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.server.middleware.CORS
 import org.http4s.syntax.kleisli._
 import org.http4s.{Request, StaticFile, _}
 import pme123.scalably.slinky.shared.Api
@@ -15,9 +16,10 @@ import pme123.scalably.slinky.shared.Api
 import java.nio.ByteBuffer
 import scala.concurrent.ExecutionContext.global
 
-object SimpleHttpServer extends IOApp {
+object HttpServer extends IOApp {
   override def run(args: List[String]): IO[ExitCode] =
-    app.use(_ => IO.never).as(ExitCode.Success)
+    IO(println("Server starting at Port 8883")) *>
+      app.use(_ => IO.never).as(ExitCode.Success)
 
   private def static(file: String, blocker: Blocker, request: Request[IO]) =
     StaticFile.fromResource("/assets/" + file, blocker, Some(request)).getOrElseF(NotFound())
@@ -31,14 +33,14 @@ object SimpleHttpServer extends IOApp {
       static("index.html", blocker, request)
     case request@GET -> path =>
       static(path.toString, blocker, request)
-  }
+  }.orNotFound
 
   private val app: Resource[IO, Server[IO]] =
     for {
       blocker <- Blocker[IO]
       server <- BlazeServerBuilder[IO](global)
-        .bindHttp(8883)
-        .withHttpApp(routes(blocker).orNotFound) //fileService[IO](FileService.Config(".", blocker)).orNotFound)
+        .bindHttp(8883, "0.0.0.0")
+        .withHttpApp(CORS(routes(blocker)))
         .resource
     } yield server
 
@@ -57,6 +59,7 @@ object SimpleHttpServer extends IOApp {
     } yield response
 
   }
+
   implicit val ec: scala.concurrent.ExecutionContext = global
 
   private def inputToOutput(path: Seq[String], body: Array[Byte]) = {

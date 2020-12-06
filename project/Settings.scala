@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.Keys.dockerExposedPorts
+import com.typesafe.sbt.packager.docker.DockerPlugin
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalablytyped.converter.plugin.ScalablyTypedPluginBase.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
@@ -9,7 +11,7 @@ object Settings {
 
   lazy val projectSettings: Project => Project =
     _.settings(
-      version := "0.2.0-SNAPSHOT",
+      version := "0.2.0",
       scalaVersion := "2.13.2"
     )
 
@@ -38,6 +40,11 @@ object Settings {
           "org.http4s" %% "http4s-blaze-server" % http4sVersion
         )
       )
+
+    lazy val docker: Project => Project =
+      _.settings(
+        dockerExposedPorts ++= Seq(8883)
+      ).enablePlugins(DockerPlugin)
   }
 
   object client {

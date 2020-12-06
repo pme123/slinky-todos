@@ -24,10 +24,6 @@ This will watch all your changes in the client and automatically refresh your Br
 
 Open in the Browser **http://localhost:8024**.
 
-> WARN: You might get a CORS Exception getting the TODOs from the Server.
->
-> See https://stackoverflow.com/a/38000615/2750966 for a solution.
-
 ## Production Build
 `sbt release`
 
@@ -40,7 +36,10 @@ You can start the server like this:
 * Mac / Linux: `./server/target/universal/stage/bin/slinky-todos-server`
 * Windows: `./server/target/universal/stage/bin/slinky-todos-server`
 
-If you want to build a distribution check here for the possibilities: 
+## Docker
+`sbt server/docker:publishLocal`
+
+If you want to build another distribution check here for the possibilities: 
 [sbt-native-packager](https://www.scala-sbt.org/sbt-native-packager/gettingstarted.html#)
 
 ## Thanks to

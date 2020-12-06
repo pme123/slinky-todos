@@ -46,6 +46,7 @@ lazy val server =
       projectSettings,
       ser.deps,
       ser.http4s,
+      ser.docker,
       sha.deps
     ).enablePlugins(JavaAppPackaging)
 
