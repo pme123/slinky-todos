@@ -1,5 +1,6 @@
-import com.typesafe.sbt.packager.Keys.dockerExposedPorts
+import com.typesafe.sbt.packager.Keys._
 import com.typesafe.sbt.packager.docker.DockerPlugin
+import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport.Docker
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalablytyped.converter.plugin.ScalablyTypedPluginBase.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
@@ -8,6 +9,8 @@ import sbt._
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
 object Settings {
+
+  val projectName = "slinky-todos"
 
   lazy val projectSettings: Project => Project =
     _.settings(
@@ -43,7 +46,9 @@ object Settings {
 
     lazy val docker: Project => Project =
       _.settings(
-        dockerExposedPorts ++= Seq(8883)
+        dockerExposedPorts ++= Seq(8883),
+        packageName in Docker := projectName,
+        dockerUsername := Some("pame")
       ).enablePlugins(DockerPlugin)
   }
 

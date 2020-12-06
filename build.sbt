@@ -1,9 +1,9 @@
 
-import Settings.{projectSettings, client => cli, server => ser, shared => sha}
+import Settings.{client => cli, server => ser, shared => sha, _}
 
 lazy val root = project
   .settings(
-    name := "slinky-todos",
+    name := projectName,
     commands += ReleaseCmd)
   .in(file("."))
   .aggregate(client)
@@ -14,7 +14,7 @@ lazy val root = project
 lazy val shared =
   crossProject(JSPlatform, JVMPlatform)
     .crossType(CrossType.Pure)
-    .settings(name := "slinky-todos-shared")
+    .settings(name := s"$projectName-shared")
     .configure(
       projectSettings,
       sha.deps
@@ -23,7 +23,7 @@ lazy val shared =
 lazy val client =
   project
     .in(file("./client"))
-    .settings(name := "slinky-todos-client")
+    .settings(name := s"$projectName-client")
     .dependsOn(shared.js)
     .enablePlugins(
       ScalablyTypedConverterPlugin,
@@ -40,7 +40,7 @@ lazy val client =
 
 lazy val server =
   project
-    .settings(name := "slinky-todos-server")
+    .settings(name := s"$projectName-server")
     .dependsOn(shared.jvm)
     .configure(
       projectSettings,

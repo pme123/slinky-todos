@@ -6,6 +6,12 @@
 
 `git clone https://github.com/pme123/slinky-todos.git`
 
+![Screenshot.png](Screenshot.png)
+## Try it out
+`docker run --publish 8883:8883 --name todos pame/slinky-todos:0.2.0`
+
+Open the Browser http://localhost:8883/.
+
 ## Usage in Dev
 ### Server Development
 `sbt server/run`
